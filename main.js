@@ -1,46 +1,51 @@
 (() => {
-  /* fetch("https://swapi.dev/api/people/")
-    .then((response) => response.json())
-    .then((data) => {
-      data.results.forEach((character) => {
-        charactersArray.push(character);
-      });
-      console.log(data.next != null || data.next != "");
-      while (data.next != null || data.next != "") {
-        fetch(data.next)
-        .then((response) => response.json())
-        .then((data) => {
-          data.results.forEach((character) => {
-            charactersArray.push(character);
-          });
-      }
-    }); */
+  const request = async () => {
+    const jsonResponses = [];
+    const response = await fetch("https://swapi.dev/api/people");
+    const json = await response.json();
+    jsonResponses.push(json.results);
 
-  const getAllCharacters = () => {
-    const characters = [];
-    const apiUrl = "https://swapi.dev/api/people/";
-
-    function fetchPage(endpoint) {
-      fetch(endpoint)
-        .then((response) => response.json())
-        .then((data) => {
-          data.results.forEach((character) => {
-            characters.push(character);
-          });
-          endpoint = data.next;
-          return endpoint;
-        })
-        .then((endpoint) => {
-          if (endpoint != null) {
-            fetchPage(endpoint);
-          } else {
-            return;
-          }
-        });
+    const apiUrl = "https://swapi.dev/api/people";
+    for (let i = 2; i < 10; i++) {
+      const response = await fetch(`${apiUrl}?page=${i}`);
+      const json = await response.json();
+      jsonResponses.push(json.results);
     }
-    fetchPage(apiUrl);
-    return characters;
+
+    return jsonResponses;
   };
 
-  const allCharacters = getAllCharacters();
+  const getAllCharacters = async () => {
+    const allCharacters = [];
+    const res = await request();
+    console.log(res);
+
+    res.forEach((characterArray) => {
+      characterArray.forEach((character) => {
+        allCharacters.push(character);
+      });
+    });
+    console.log(allCharacters);
+    return allCharacters;
+  };
+
+  const renderNames = async () => {
+    const characterList = await getAllCharacters();
+
+    let names = characterList
+      .map((character) => {
+        return `<li>${character.name}</li>`;
+      })
+      .join("");
+
+    console.log(names);
+
+    let nameList = document.createElement("ul");
+    nameList.innerHTML = names;
+
+    document.querySelector("#nameNavigation").append(nameList);
+    console.log(characterList);
+  };
+
+  renderNames();
 })();
