@@ -53,6 +53,7 @@
     /*  console.log(names); */
 
     let nameList = document.createElement("ul");
+    nameList.classList.add("character-list__nav__ul");
     nameList.innerHTML = names;
 
     document.querySelector("#nameNavigation").append(nameList);
@@ -73,7 +74,20 @@
     );
     /* console.log(theCharacter); */
 
-    const characterInfo = `<h2>${theCharacter.name}</h2>`;
+    const characterInfo = `
+                          <article class="character-info__article">
+                            <h2>${theCharacter.name}</h2>
+                            <div>
+                              <ul>
+                                <li>${theCharacter.birth_year}</li>
+                                <li>${theCharacter.eye_color}</li>
+                                <li>${theCharacter.hair_color}</li>
+                                <li>${theCharacter.height}</li>
+                                <li>${theCharacter.mass}</li>
+                              </ul>
+
+                            </div>
+                          </article>`;
 
     document.querySelector("#infoSection").innerHTML = characterInfo;
   };
