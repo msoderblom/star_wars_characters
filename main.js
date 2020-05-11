@@ -1,4 +1,5 @@
 (() => {
+  let allCharacters;
   const request = async () => {
     const jsonResponses = [];
     const response = await fetch("https://swapi.dev/api/people");
@@ -29,23 +30,53 @@
     return allCharacters;
   };
 
-  const renderNames = async () => {
-    const characterList = await getAllCharacters();
+  const setID = async () => {
+    allCharacters = await getAllCharacters();
 
+    let counter = 0;
+    allCharacters.forEach((character) => {
+      character["id"] = counter;
+      counter++;
+    });
+    /* console.log(allCharacters); */
+
+    renderNames(allCharacters);
+  };
+
+  const renderNames = (characterList) => {
     let names = characterList
       .map((character) => {
-        return `<li>${character.name}</li>`;
+        return `<li data-id="${character.id}" class="character-list__nav__ul__listitem character-name">${character.name}</li>`;
       })
       .join("");
 
-    console.log(names);
+    /*  console.log(names); */
 
     let nameList = document.createElement("ul");
     nameList.innerHTML = names;
 
     document.querySelector("#nameNavigation").append(nameList);
     console.log(characterList);
+
+    document.querySelectorAll(".character-name").forEach((listitem) => {
+      listitem.addEventListener("click", showInfo);
+    });
   };
 
-  renderNames();
+  const showInfo = (e) => {
+    const characterId = e.currentTarget.dataset.id;
+    /*    console.log(e.currentTarget.dataset.id);
+    console.log(allCharacters); */
+
+    const theCharacter = allCharacters.find(
+      (character) => character.id == characterId
+    );
+    /* console.log(theCharacter); */
+
+    const characterInfo = `<h2>${theCharacter.name}</h2>`;
+
+    document.querySelector("#infoSection").innerHTML = characterInfo;
+  };
+
+  setID();
 })();
