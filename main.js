@@ -19,14 +19,14 @@
   const getAllCharacters = async () => {
     const allCharacters = [];
     const res = await request();
-    console.log(res);
+    /* console.log(res); */
 
     res.forEach((characterArray) => {
       characterArray.forEach((character) => {
         allCharacters.push(character);
       });
     });
-    console.log(allCharacters);
+    /* console.log(allCharacters); */
     return allCharacters;
   };
 
@@ -38,7 +38,7 @@
       character["id"] = counter;
       counter++;
     });
-    /* console.log(allCharacters); */
+    console.log(allCharacters);
 
     renderNames(allCharacters);
   };
@@ -57,39 +57,93 @@
     nameList.innerHTML = names;
 
     /* document.querySelector("#nameNavigation").append(nameList); */
-    console.log(characterList);
+    /* console.log(characterList); */
 
     document.querySelectorAll(".character-name").forEach((listitem) => {
       listitem.addEventListener("click", showInfo);
     });
   };
 
+  /* const asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }; */
+
+  const extraFetch = async (endpoint) => {
+    const response = await fetch(endpoint);
+    const json = await response.json();
+    return await json;
+  };
+
   const showInfo = (e) => {
     const characterId = e.currentTarget.dataset.id;
-    /*    console.log(e.currentTarget.dataset.id);
-    console.log(allCharacters); */
 
-    const theCharacter = allCharacters.find(
-      (character) => character.id == characterId
-    );
+    function getInfo(id) {
+      return new Promise((resolve, reject) => {
+        const theCharacter = allCharacters.find(
+          (character) => character.id == id
+        );
+
+        const films = [];
+        let itemsProcessed = 0;
+        theCharacter.films.forEach(async (film, index, array) => {
+          console.log(film);
+          films.push(await extraFetch(film));
+
+          itemsProcessed++;
+          if (itemsProcessed === array.length) {
+            console.log("hej från ifsatsen");
+
+            resolve({ theCharacter, films });
+          }
+        });
+        console.log(films);
+      });
+    }
+
+    getInfo(characterId).then(function ({ theCharacter, films }) {
+      console.log(theCharacter, films);
+      console.log(films[0]);
+
+      const filmSection = films
+        .map((film) => {
+          return `<span>${film.title}</span>`;
+        })
+        .join("");
+      console.log(filmSection);
+
+      const characterInfo = `
+                            <article class="character-info__article">
+                              <h2>${theCharacter.name}</h2>
+                              <div>
+                                <ul>
+                                  <li>${theCharacter.birth_year}</li>
+                                  <li>${theCharacter.eye_color}</li>
+                                  <li>${theCharacter.hair_color}</li>
+                                  <li>${theCharacter.height}</li>
+                                  <li>${theCharacter.mass}</li>
+                                </ul>
+  
+                              </div>
+                              <div>
+                                ${filmSection}
+                              </div>
+                            </article>`;
+
+      document.querySelector("#infoSection").innerHTML = characterInfo;
+    });
+
     /* console.log(theCharacter); */
 
-    const characterInfo = `
-                          <article class="character-info__article">
-                            <h2>${theCharacter.name}</h2>
-                            <div>
-                              <ul>
-                                <li>${theCharacter.birth_year}</li>
-                                <li>${theCharacter.eye_color}</li>
-                                <li>${theCharacter.hair_color}</li>
-                                <li>${theCharacter.height}</li>
-                                <li>${theCharacter.mass}</li>
-                              </ul>
+    /*    await asyncForEach(theCharacter.films, async (num) => {
+        await waitFor(50);
+        console.log(num);
+      }); */
 
-                            </div>
-                          </article>`;
+    // expected output: "Success!"
 
-    document.querySelector("#infoSection").innerHTML = characterInfo;
+    /*  console.log(films[1]); */
   };
 
   setID();
