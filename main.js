@@ -52,11 +52,11 @@
 
     /*  console.log(names); */
 
-    let nameList = document.createElement("ul");
-    nameList.classList.add("character-list__nav__ul");
+    let nameList = document.querySelector("#character-ul");
+    nameList.innerHTML = "";
     nameList.innerHTML = names;
 
-    document.querySelector("#nameNavigation").append(nameList);
+    /* document.querySelector("#nameNavigation").append(nameList); */
     console.log(characterList);
 
     document.querySelectorAll(".character-name").forEach((listitem) => {
@@ -93,4 +93,18 @@
   };
 
   setID();
+
+  const listSearch = (e) => {
+    const searchWord = e.currentTarget.value.toLowerCase();
+    /* console.log(searchWord); */
+
+    const filteredList = allCharacters.filter((character) =>
+      character.name.toLowerCase().includes(searchWord)
+    );
+    /* console.log(filteredList); */
+    renderNames(filteredList);
+  };
+
+  document.querySelector("#searchfield").addEventListener("change", listSearch);
+  document.querySelector("#searchfield").addEventListener("keyup", listSearch);
 })();
