@@ -22,6 +22,23 @@ body {
       grid-template-rows: auto;
 }
 
+.character-list {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: unset;
+      grid-template-columns: unset;
+  -ms-grid-rows: 5vh 95vh;
+      grid-template-rows: 5vh 95vh;
+}
+
+.character-list__nav {
+  overflow-y: scroll;
+}
+
+.character-list__nav::-webkit-scrollbar {
+  display: none;
+}
+
 .character-list__nav__ul {
   list-style: none;
   padding: 0;

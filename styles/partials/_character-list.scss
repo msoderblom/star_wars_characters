@@ -1,5 +1,14 @@
 .character-list {
+  display: grid;
+  grid-template-columns: unset;
+  grid-template-rows: 5vh 95vh;
+  &__search-input {
+  }
   &__nav {
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     &__ul {
       list-style: none;
       padding: 0;
