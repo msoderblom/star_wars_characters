@@ -79,11 +79,16 @@
   const showInfo = (e) => {
     const characterId = e.currentTarget.dataset.id;
 
-    function getInfo(id) {
+    const getInfo = async (id) => {
       return new Promise((resolve, reject) => {
         const theCharacter = allCharacters.find(
           (character) => character.id == id
         );
+
+        let homeworld;
+        (async () => {
+          homeworld = await extraFetch(theCharacter.homeworld);
+        })();
 
         const films = [];
         let itemsProcessed = 0;
@@ -95,30 +100,36 @@
           if (itemsProcessed === array.length) {
             console.log("hej från ifsatsen");
 
-            resolve({ theCharacter, films });
+            resolve({ theCharacter, films, homeworld });
           }
         });
         console.log(films);
       });
-    }
+    };
 
-    getInfo(characterId).then(function ({ theCharacter, films }) {
+    getInfo(characterId).then(({ theCharacter, films, homeworld }) => {
       console.log(theCharacter, films);
       console.log(films[0]);
+      console.log(homeworld);
 
       const filmSection = films
         .map((film) => {
-          return `<span>${film.title}</span>`;
+          return `<div class="character-info__article__films__wrapper__film">
+                    <div>
+                    <img src="./assets/films/${film.episode_id}.jpg" alt="Film poster">
+                    </div>
+                    <p>Episode ${film.episode_id}</p>
+                    <p>${film.title}</p>  
+                  </div>`;
         })
         .join("");
-      console.log(filmSection);
 
       const characterInfo = `
                             <article class="character-info__article">
-                              <h2>${theCharacter.name}</h2>
-                              <div>
+                              <button id="close-btn" class="close-btn">x</button>
+                              <h2 class="character-info__article__title">${theCharacter.name}</h2>
+                              <div class="character-info__article__features">
                                 <ul>
-                                  <li>${theCharacter.birth_year}</li>
                                   <li>${theCharacter.eye_color}</li>
                                   <li>${theCharacter.hair_color}</li>
                                   <li>${theCharacter.height}</li>
@@ -126,12 +137,26 @@
                                 </ul>
   
                               </div>
-                              <div>
+                              <div class="character-info__article__birth-info">
+                              <p>Birth year: ${theCharacter.birth_year}</p>
+                              <p>${homeworld.name}</p>
+                              <ul>
+                              <li>Population: ${homeworld.population}</li>
+                              <li>${homeworld.climate}</li>
+                              <ul>
+                              </div>
+                              <div class="character-info__article__films">
+                                <h3 class="character-info__article__films__title">Films</h3>
+                                <div class="character-info__article__films__wrapper">
                                 ${filmSection}
+                                </div>
                               </div>
                             </article>`;
 
       document.querySelector("#infoSection").innerHTML = characterInfo;
+      document.querySelector("#close-btn").addEventListener("click", () => {
+        console.log("close");
+      });
     });
 
     /* console.log(theCharacter); */

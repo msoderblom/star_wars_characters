@@ -1,9 +1,60 @@
 .character-info {
+  position: relative;
   &__article {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    width: 70%;
     color: white;
-    position: fixed;
+    position: absolute;
+    transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+
+    .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      cursor: pointer;
+    }
+
+    &__title {
+      position: relative;
+      grid-column: span 2;
+      width: 100%;
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 900;
+      font-size: 3vw;
+      color: #ffee58;
+    }
+
+    &__films {
+      grid-column: span 2;
+
+      &__title {
+        width: 100%;
+      }
+      &__wrapper {
+        display: flex;
+        justify-content: center;
+
+        max-width: 100%;
+
+        &__film {
+          flex: 1 1;
+          min-width: 16%;
+          max-width: 20%;
+          padding: 5px 5px;
+          div {
+            max-height: 300px;
+          }
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
   }
 }

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono:wght@400;700&display=swap");
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -33,6 +34,7 @@ body {
 
 .character-list__nav {
   overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .character-list__nav::-webkit-scrollbar {
@@ -57,12 +59,78 @@ body {
   text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
 }
 
+.character-info {
+  position: relative;
+}
+
 .character-info__article {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  -ms-grid-rows: auto auto auto;
+      grid-template-rows: auto auto auto;
+  width: 70%;
   color: white;
-  position: fixed;
-  top: 50%;
-  left: 50%;
+  position: absolute;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.character-info__article .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+.character-info__article__title {
+  position: relative;
+  grid-column: span 2;
+  width: 100%;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  font-size: 3vw;
+  color: #ffee58;
+}
+
+.character-info__article__films {
+  grid-column: span 2;
+}
+
+.character-info__article__films__title {
+  width: 100%;
+}
+
+.character-info__article__films__wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  max-width: 100%;
+}
+
+.character-info__article__films__wrapper__film {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1;
+          flex: 1 1;
+  min-width: 16%;
+  max-width: 20%;
+  padding: 5px 5px;
+}
+
+.character-info__article__films__wrapper__film div {
+  max-height: 300px;
+}
+
+.character-info__article__films__wrapper__film img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 /*# sourceMappingURL=style.css.map */
