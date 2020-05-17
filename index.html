@@ -7,22 +7,41 @@
     <title>Star Wars Characters</title>
   </head>
   <body>
-    <header></header>
-
     <main class="main">
       <aside class="character-list">
         <input
           id="searchfield"
           class="character-list__search-input"
           type="text"
+          placeholder="Search..."
         />
+        <div class="character-list__laser"></div>
         <nav id="nameNavigation" class="character-list__nav">
           <ul id="character-ul" class="character-list__nav__ul"></ul>
         </nav>
       </aside>
-      <section id="infoSection" class="character-info"></section>
+      <section id="logoSection" class="logo-section">
+        <img src="./assets/star-wars-logo.png" alt="Star wars logo" />
+      </section>
+      <section id="infoSection" class="character-info hide"></section>
     </main>
-
+    <footer>
+      <p>
+        Created by Matilda Söderblom
+        <a
+          href="https://github.com/msoderblom"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+        <a
+          href="https://www.linkedin.com/in/matilda-s%C3%B6derblom-b67aa3175/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >LinkedIn</a
+        >
+      </p>
+    </footer>
     <script src="./main.js" type="text/javascript"></script>
   </body>
 </html>

@@ -2,8 +2,14 @@
 
 * {
   box-sizing: border-box;
+  font-family: "Space Mono", sans-serif;
+}
+html {
+  max-height: 100vh;
+  overflow: hidden;
 }
 body {
+  max-height: 100vh;
   padding: 0;
   margin: 0;
   background-image: url("../../assets/space.gif");
@@ -14,6 +20,34 @@ body {
 
 .main {
   display: grid;
-  grid-template-columns: minmax(max-content, 300px) 1fr;
+  grid-template-columns: 330px 1fr;
   grid-template-rows: auto;
+}
+.logo-section {
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 50%;
+  grid-template-rows: auto;
+  justify-content: center;
+  align-items: center;
+  img {
+    object-fit: contain;
+    width: 100%;
+  }
+}
+footer {
+  font-size: 0.8em;
+  color: white;
+  width: fit-content;
+  padding-right: 10px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  a {
+    color: #ffc500;
+  }
+}
+
+.hide {
+  display: none;
 }
