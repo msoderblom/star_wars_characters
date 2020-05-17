@@ -1,4 +1,7 @@
 (() => {
+  const infoSection = document.querySelector("#infoSection");
+  const logoSection = document.querySelector("#logoSection");
+
   let allCharacters;
   const request = async () => {
     const jsonResponses = [];
@@ -64,12 +67,6 @@
     });
   };
 
-  /* const asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
-      await callback(array[index], index, array);
-    }
-  }; */
-
   const extraFetch = async (endpoint) => {
     const response = await fetch(endpoint);
     const json = await response.json();
@@ -77,6 +74,23 @@
   };
 
   const showInfo = (e) => {
+    console.log(e.currentTarget.classList);
+
+    if (e.currentTarget.className.includes("active")) {
+      console.log("hej från if");
+      infoSection.classList.add("hide");
+      logoSection.classList.remove("hide");
+
+      document.querySelector("#infoSection").innerHTML = "";
+      e.currentTarget.classList.remove("active");
+      return;
+    }
+
+    document.querySelectorAll(".character-name").forEach((listitem) => {
+      listitem.classList.remove("active");
+    });
+    e.currentTarget.classList.add("active");
+
     const characterId = e.currentTarget.dataset.id;
 
     const getInfo = async (id) => {
@@ -98,8 +112,6 @@
 
           itemsProcessed++;
           if (itemsProcessed === array.length) {
-            console.log("hej från ifsatsen");
-
             resolve({ theCharacter, films, homeworld });
           }
         });
@@ -116,34 +128,43 @@
         .map((film) => {
           return `<div class="character-info__article__films__wrapper__film">
                     <div>
-                    <img src="./assets/films/${film.episode_id}.jpg" alt="Film poster">
+                    <img src="./assets/films/${
+                      film.episode_id
+                    }.jpg" alt="Film poster">
                     </div>
-                    <p>Episode ${film.episode_id}</p>
-                    <p>${film.title}</p>  
+                    <p class="episode">Episode ${romanize(film.episode_id)}</p>
+                    <p class="title">${film.title}</p>  
                   </div>`;
         })
         .join("");
 
       const characterInfo = `
                             <article class="character-info__article">
-                              <button id="close-btn" class="close-btn">x</button>
+                              <button id="close-btn" class="close-btn">
+                                <div class="sword left"></div>
+                                <div class="sword right"></div>
+                              </button>
                               <h2 class="character-info__article__title">${theCharacter.name}</h2>
                               <div class="character-info__article__features">
                                 <ul>
-                                  <li>${theCharacter.eye_color}</li>
-                                  <li>${theCharacter.hair_color}</li>
-                                  <li>${theCharacter.height}</li>
-                                  <li>${theCharacter.mass}</li>
+                                  <li><strong>Eye color:</strong> ${theCharacter.eye_color}</li>
+                                  <li><strong>Hair color:</strong> ${theCharacter.hair_color}</li>
+                                  <li><strong>Height:</strong> ${theCharacter.height} cm</li>
+                                  <li><strong>Mass:</strong> ${theCharacter.mass} kg</li>
                                 </ul>
   
                               </div>
                               <div class="character-info__article__birth-info">
-                              <p>Birth year: ${theCharacter.birth_year}</p>
-                              <p>${homeworld.name}</p>
-                              <ul>
-                              <li>Population: ${homeworld.population}</li>
-                              <li>${homeworld.climate}</li>
-                              <ul>
+                                <ul>
+                                  <li><strong>Birth year:</strong> ${theCharacter.birth_year}</li>
+                                  <li><strong>Homeworld:</strong> ${homeworld.name}
+                                    <ul>
+                                      <li><strong>Population:</strong> ${homeworld.population}</li>
+                                      <li><strong>Climate:</strong> ${homeworld.climate}</li>
+                                      <li><strong>Terrain:</strong> ${homeworld.terrain}</li>
+                                    </ul>
+                                  </li>         
+                                </ul>
                               </div>
                               <div class="character-info__article__films">
                                 <h3 class="character-info__article__films__title">Films</h3>
@@ -153,22 +174,12 @@
                               </div>
                             </article>`;
 
-      document.querySelector("#infoSection").innerHTML = characterInfo;
-      document.querySelector("#close-btn").addEventListener("click", () => {
-        console.log("close");
-      });
+      infoSection.innerHTML = characterInfo;
+      document.querySelector("#close-btn").addEventListener("click", closeInfo);
+
+      infoSection.classList.remove("hide");
+      logoSection.classList.add("hide");
     });
-
-    /* console.log(theCharacter); */
-
-    /*    await asyncForEach(theCharacter.films, async (num) => {
-        await waitFor(50);
-        console.log(num);
-      }); */
-
-    // expected output: "Success!"
-
-    /*  console.log(films[1]); */
   };
 
   setID();
@@ -182,6 +193,56 @@
     );
     /* console.log(filteredList); */
     renderNames(filteredList);
+  };
+
+  const closeInfo = () => {
+    infoSection.classList.add("hide");
+    logoSection.classList.remove("hide");
+    document.querySelectorAll(".character-name").forEach((listitem) => {
+      listitem.classList.remove("active");
+    });
+  };
+
+  const romanize = (num) => {
+    // This functions is taken from here: http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
+    if (!+num) return false;
+    var digits = String(+num).split(""),
+      key = [
+        "",
+        "C",
+        "CC",
+        "CCC",
+        "CD",
+        "D",
+        "DC",
+        "DCC",
+        "DCCC",
+        "CM",
+        "",
+        "X",
+        "XX",
+        "XXX",
+        "XL",
+        "L",
+        "LX",
+        "LXX",
+        "LXXX",
+        "XC",
+        "",
+        "I",
+        "II",
+        "III",
+        "IV",
+        "V",
+        "VI",
+        "VII",
+        "VIII",
+        "IX",
+      ],
+      roman = "",
+      i = 3;
+    while (i--) roman = (key[+digits.pop() + i * 10] || "") + roman;
+    return Array(+digits.join("") + 1).join("M") + roman;
   };
 
   document.querySelector("#searchfield").addEventListener("change", listSearch);
