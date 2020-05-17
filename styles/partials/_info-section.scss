@@ -66,10 +66,16 @@
       align-items: center;
       justify-content: start;
       flex-direction: column;
+      .list {
+        list-style: none;
+        padding: 0;
+      }
     }
-    ul {
-      list-style: none;
-      padding: 0;
+    &__birth-info {
+      &__homeworld {
+        list-style: square;
+        padding-left: 20px;
+      }
     }
 
     &__films {
@@ -94,9 +100,6 @@
           border: 2px solid #ffc500;
           color: white;
 
-          div {
-            /*    max-height: 300px; */
-          }
           img {
             width: 100%;
             object-fit: cover;

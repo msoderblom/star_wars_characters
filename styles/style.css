@@ -244,9 +244,14 @@ footer a {
           flex-direction: column;
 }
 
-.character-info__article ul {
+.character-info__article__features .list, .character-info__article__birth-info .list {
   list-style: none;
   padding: 0;
+}
+
+.character-info__article__birth-info__homeworld {
+  list-style: square;
+  padding-left: 20px;
 }
 
 .character-info__article__films {
@@ -278,10 +283,6 @@ footer a {
   margin: 0 5px;
   border: 2px solid #ffc500;
   color: white;
-}
-
-.character-info__article__films__wrapper__film div {
-  /*    max-height: 300px; */
 }
 
 .character-info__article__films__wrapper__film img {

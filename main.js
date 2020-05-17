@@ -22,14 +22,13 @@
   const getAllCharacters = async () => {
     const allCharacters = [];
     const res = await request();
-    /* console.log(res); */
 
     res.forEach((characterArray) => {
       characterArray.forEach((character) => {
         allCharacters.push(character);
       });
     });
-    /* console.log(allCharacters); */
+
     return allCharacters;
   };
 
@@ -53,14 +52,9 @@
       })
       .join("");
 
-    /*  console.log(names); */
-
     let nameList = document.querySelector("#character-ul");
     nameList.innerHTML = "";
     nameList.innerHTML = names;
-
-    /* document.querySelector("#nameNavigation").append(nameList); */
-    /* console.log(characterList); */
 
     document.querySelectorAll(".character-name").forEach((listitem) => {
       listitem.addEventListener("click", showInfo);
@@ -146,7 +140,7 @@
                               </button>
                               <h2 class="character-info__article__title">${theCharacter.name}</h2>
                               <div class="character-info__article__features">
-                                <ul>
+                                <ul class="list">
                                   <li><strong>Eye color:</strong> ${theCharacter.eye_color}</li>
                                   <li><strong>Hair color:</strong> ${theCharacter.hair_color}</li>
                                   <li><strong>Height:</strong> ${theCharacter.height} cm</li>
@@ -155,10 +149,10 @@
   
                               </div>
                               <div class="character-info__article__birth-info">
-                                <ul>
+                                <ul class="list">
                                   <li><strong>Birth year:</strong> ${theCharacter.birth_year}</li>
                                   <li><strong>Homeworld:</strong> ${homeworld.name}
-                                    <ul>
+                                    <ul class="character-info__article__birth-info__homeworld">
                                       <li><strong>Population:</strong> ${homeworld.population}</li>
                                       <li><strong>Climate:</strong> ${homeworld.climate}</li>
                                       <li><strong>Terrain:</strong> ${homeworld.terrain}</li>
@@ -186,12 +180,10 @@
 
   const listSearch = (e) => {
     const searchWord = e.currentTarget.value.toLowerCase();
-    /* console.log(searchWord); */
 
     const filteredList = allCharacters.filter((character) =>
       character.name.toLowerCase().includes(searchWord)
     );
-    /* console.log(filteredList); */
     renderNames(filteredList);
   };
 
